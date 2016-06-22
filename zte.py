@@ -8,7 +8,7 @@ app.config.from_envvar('DASHBOARD_CONF', silent=True)
 # Handlers ---------
 
 @app.route('/')
-def overview_zte(*args, **kwargs):
+def zte_overview(*args, **kwargs):
     ctx = {
         'metrc': 'commits',
         'metric_label': 'Commits'
