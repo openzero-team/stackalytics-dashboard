@@ -1,5 +1,7 @@
 import flask
 import requests
+from werkzeug.contrib.cache import SimpleCache
+cache = SimpleCache()
 
 app = flask.Flask(__name__)
 app.config.from_object(__name__)
@@ -19,7 +21,11 @@ def zte_overview(*args, **kwargs):
 def cached_proxy(path):
     API_ROOT = 'http://stackalytics.com/'
     full_url = API_ROOT + flask.request.full_path
-    r = requests.get(full_url)
+    r = cache.get(full_url)
+    if r is None:
+        r = requests.get(full_url)
+        cache.set(full_url, r, timeout = 60 * 60)
+
     return flask.Response(
         r.text,
         status = r.status_code,
