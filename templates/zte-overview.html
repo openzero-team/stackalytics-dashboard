@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block head %}
 <script type="text/javascript">
-  renderTimeline({ metric: 'commits', project_type: 'opnfv-group', release: 'newton', company: 'zte corporation'});
-  renderTableAndChart("/api/1.0/stats/companies?project_type=opnfv-group&release=newton&metric=commits",
-    "company_container", "company_table", "company_chart", "company");
-  renderTableAndChart("/api/1.0/stats/engineers?project_type=opnfv-group&&release=newton&metric=commits&company=zte%20corporation",
-    "engineer_container", "engineer_table", "engineer_chart", "user_id");
+  var commits_in_opnfv_c = { project_type: 'opnfv-group', release: 'newton', metric: 'commits' };
+  var zte_commits_in_opnfv_c = { metric: 'commits', project_type: 'opnfv-group', release: 'newton', company: 'zte corporation'};
+  renderTimeline(zte_commits_in_opnfv_c);
+  renderTableAndChart(makeURI('/api/1.0/stats/companies', commits_in_opnfv_c), "company_container", "company_table", "company_chart", "company");
+  renderTableAndChart(makeURI('/api/1.0/stats/engineers', zte_commits_in_opnfv_c), "engineer_container", "engineer_table", "engineer_chart", "user_id");
 </script>
 {% endblock %}
 
