@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 {% block head %}
 <script type="text/javascript">
-  var commits_in_opnfv_c = { project_type: 'opnfv-group', release: 'newton', metric: 'commits' };
-  var zte_commits_in_opnfv_c = { metric: 'commits', project_type: 'opnfv-group', release: 'newton', company: 'zte corporation'};
-  renderTimeline(zte_commits_in_opnfv_c);
-  renderTableAndChart(makeURI('/api/1.0/stats/companies', commits_in_opnfv_c), "company_container", "company_table", "company_chart", "company");
-  renderTableAndChart(makeURI('/api/1.0/stats/engineers', zte_commits_in_opnfv_c), "engineer_container", "engineer_table", "engineer_chart", "user_id");
+  function render() {
+    var hash = window.location.hash;
+
+    $('.menu-item').removeClass('current-menu-item');
+
+    if (hash == '#openstack') {
+      project_type = 'openstack';
+      $('#menu-openstack').addClass('current-menu-item')
+    } else {
+      project_type = 'opnfv-group'
+      $('#menu-opnfv').addClass('current-menu-item')
+    }
+
+    var commits = { project_type: project_type, release: 'newton', metric: 'commits' };
+    var zte_commits = { company: 'zte corporation', project_type: project_type, release: 'newton', metric: 'commits'};
+
+    renderTimeline(zte_commits);
+    renderTableAndChart(makeURI('/api/1.0/stats/companies', commits), "company_container", "company_table", "company_chart", "company");
+    renderTableAndChart(makeURI('/api/1.0/stats/engineers', zte_commits), "engineer_container", "engineer_table", "engineer_chart", "user_id");
+  }
+  window.onhashchange = window.onload = render;
 </script>
 {% endblock %}
 
@@ -22,7 +38,8 @@
         </div>
         <div class="stackamenu" style="margin-left: 240px">
             <ul id="menu-stackamenu">
-                <li class="menu-item current-menu-item"><a href="/"><span class="icon-pie"></span>OPNFV Colorado (OpenStack Newton) Commits</a></li>
+                <li id="menu-opnfv" class="menu-item"><a href="/#opnfv"><span class="icon-pie"></span>OPNFV Colorado Commits</a></li>
+                <li id="menu-openstack" class="menu-item"><a href="/#openstack"><span class="icon-pie"></span>OpenStack Newton Commits</a></li>
             </ul>
         </div>
     </div>

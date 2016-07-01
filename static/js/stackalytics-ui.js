@@ -156,6 +156,7 @@ function renderTableAndChart(url, container_id, table_id, chart_id, link_param, 
 
                 if (table_id) {
                     $("#" + table_id).dataTable({
+                        "bDestroy": true,  // allow reinit
                         "aLengthMenu": [
                             [10, 25, 50, -1],
                             [10, 25, 50, "All"]
