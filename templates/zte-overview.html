@@ -17,7 +17,9 @@
     var commits = { project_type: project_type, release: 'newton', metric: 'commits' };
     var zte_commits = { company: 'zte corporation', project_type: project_type, release: 'newton', metric: 'commits'};
 
+    $('#timeline').empty();
     renderTimeline(zte_commits);
+
     renderTableAndChart(makeURI('/api/1.0/stats/companies', commits), "company_container", "company_table", "company_chart", "company");
     renderTableAndChart(makeURI('/api/1.0/stats/engineers', zte_commits), "engineer_container", "engineer_table", "engineer_chart", "user_id");
   }
