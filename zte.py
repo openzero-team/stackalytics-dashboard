@@ -10,17 +10,24 @@ app.config.from_envvar('DASHBOARD_CONF', silent=True)
 # Handlers ---------
 
 @app.route('/')
-def zte_overview(*args, **kwargs):
+def zte_overview():
+    # We don't handle complex request locally
+    if flask.request.args:
+        return cached_proxy()
+
     ctx = {
         'metrc': 'commits',
         'metric_label': 'Commits'
     }
     return flask.render_template('zte-overview.html', **ctx)
 
-@app.route('/api/<path:path>')
-def cached_proxy(path):
-    API_ROOT = 'http://stackalytics.com/'
-    full_url = API_ROOT + flask.request.full_path
+@app.route('/api/<path:dummy>')
+def api(dummy):
+    return cached_proxy()
+
+def cached_proxy():
+    UPSTREAM = 'http://stackalytics.com/'
+    full_url = UPSTREAM + flask.request.full_path
     r = cache.get(full_url)
     if r is None:
         r = requests.get(full_url)
