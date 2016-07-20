@@ -21,8 +21,8 @@ def zte_overview():
     }
     return flask.render_template('zte-overview.html', **ctx)
 
-@app.route('/api/<path:dummy>')
-def api(dummy):
+@app.route('/<path:dummy>')
+def catch_all(dummy):
     return cached_proxy()
 
 def cached_proxy():
